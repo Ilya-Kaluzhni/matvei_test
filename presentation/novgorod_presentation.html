@@ -4,34 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Презентация</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.179/pdf.min.js"></script>
     <style>
         body {
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
         }
 
-        .presentation-container {
-            width: 80vw;
-            height: 90vh;
-            border: none;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        .slide-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        canvas {
+            width: 100%; /* Растягиваем по ширине экрана */
+            max-width: 1200px; /* Максимальная ширина слайда */
+            height: auto;
             border-radius: 8px;
-            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        canvas:hover {
+            transform: scale(1.03);
         }
     </style>
 </head>
 <body>
 
-    <!-- Встраиваем PDF-презентацию -->
-    <iframe 
-        src="novgorod.pdf" 
-        class="presentation-container">
-    </iframe>
+<div class="slide-container" id="slideContainer"></div>
+
+<script>
+    const url = 'presentation.pdf'; // Указываем путь к PDF-файлу
+
+    const loadPDF = async () => {
+        const container = document.getElementById('slideContainer');
+        const loadingTask = pdfjsLib.getDocument(url);
+
+        // Загружаем документ
+        const pdf = await loadingTask.promise;
+
+        for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const viewport = page.getViewport({ scale: 1.5 });
+
+            // Создаём элемент canvas для отрисовки страницы
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            // Рендерим страницу на canvas
+            const renderContext = {
+                canvasContext: context,
+                viewport: viewport
+            };
+
+            await page.render(renderContext).promise;
+
+            // Масштабируем под ширину экрана
+            canvas.style.width = '100%';
+            canvas.style.height = 'auto';
+
+            container.appendChild(canvas);
+        }
+    };
+
+    loadPDF(); // Загружаем PDF при загрузке страницы
+</script>
 
 </body>
 </html>
