@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карта</title>
+    <style>
+        /* Контейнер карты */
+        .map-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Картинка карты */
+        .map-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* Контейнер города */
+        .city {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        /* Общий контейнер для названия и QR-кода */
+        .city-content {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column; /* Ставим текст сверху, QR-код снизу */
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+        }
+
+        /* Название города */
+        .city-label {
+            font-size: 16px;
+            white-space: nowrap;
+        }
+
+        /* QR-код */
+        .qr-code {
+            width: 60px;
+            height: 60px;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="map-container">
+        <img src="map.png" alt="карта" class="map-image">
+        
+        <!-- Новгород -->
+        <div class="city" style="top: 40%; left: 30%;">
+            <div class="city-content">
+                <div class="city-label">Новгород</div>
+                <img src="qr-code/новгород.png" alt="QR код Новгород" class="qr-code">
+            </div>
+        </div>
+
+        <!-- Суздаль -->
+        <div class="city" style="top: 35%; left: 35%;">
+            <div class="city-content">
+                <div class="city-label">Суздаль</div>
+                <img src="qr-code/новгород.png" alt="QR код Суздаль" class="qr-code">
+            </div>
+        </div>
+
+        <!-- Киев -->
+        <div class="city" style="top: 50%; left: 45%;">
+            <div class="city-content">
+                <div class="city-label">Киев</div>
+                <img src="qr-code/новгород.png" alt="QR код Киев" class="qr-code">
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
